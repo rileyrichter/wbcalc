@@ -56,6 +56,11 @@ form.addEventListener("click", function (evt) {
       let medicareRS = "$" + Number(data[0].fields.medicareRS).toFixed(2);
       document.getElementById("medicareFS").textContent = medicareFS2;
       document.getElementById("medicareRS").textContent = medicareRS;
+      let futaFS = Number(data[0].fields.futaFS) * 100;
+      let futaFS2 = futaFS.toFixed(2) + "%";
+      let futaRS = "$" + Number(data[0].fields.futaRS).toFixed(2);
+      document.getElementById("futaFS").textContent = futaFS2;
+      document.getElementById("futaRS").textContent = futaRS;
       console.log(data);
     });
 });
