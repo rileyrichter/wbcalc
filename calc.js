@@ -101,11 +101,11 @@ form.addEventListener("click", function (evt) {
       let fringeRS = "$" + Number(data[0].fields.fringeTOTAL).toFixed(2);
       document.getElementById("fringeBASIS").textContent = fringeBasis2;
       document.getElementById("fringeTOTAL").textContent = fringeRS;
-      let unionTotal = Number(data[0].fields.unionTOTAL) * 100;
-      let unionTotal2 = unionTotal.toFixed(2) + "%";
-      let unionPercent = "$" + Number(data[0].fields.unionPC).toFixed(2);
-      document.getElementById("unionTOTAL").textContent = unionTotal2;
-      document.getElementById("unionPC").textContent = unionPercent;
+      let unionPercent = Number(data[0].fields.unionPC) * 100;
+      let unionPercent2 = unionPercent.toFixed(2) + "%";
+      let unionTotal = "$" + Number(data[0].fields.unionTOTAL).toFixed(2);
+      document.getElementById("unionTOTAL").textContent = unionTotal;
+      document.getElementById("unionPC").textContent = unionPercent2;
       console.log(hoursRS);
       console.log(data);
     });
