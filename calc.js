@@ -108,11 +108,13 @@ form.addEventListener("click", function (evt) {
       let unionTotal = "$" + Number(data[0].fields.unionTOTAL).toFixed(2);
       document.getElementById("unionTOTAL").textContent = unionTotal;
       document.getElementById("unionPC").textContent = unionPercent2;
-      console.log(hoursRS);
-      console.log(data);
     })
     .finally(() => {
       document.getElementById("data").style.display = "none";
       document.getElementById("result").style.display = "block";
     });
+});
+
+document.getElementById("again").addEventListener("click", () => {
+  location.reload();
 });
