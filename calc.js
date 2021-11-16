@@ -45,6 +45,10 @@ form.addEventListener("click", function (evt) {
     .then((data) => {
       let socialsecurityFS = Number(data[0].fields.socialsecurityFS) * 100;
       let socialsecurityFS2 = socialsecurityFS.toFixed(2) + "%";
+      let socialsecurityRS =
+        "$" + Number(data[0].fields.socialsecurityRS).toFixed(2);
+      document.getElementbyId("socialsecurityFS").innerHTML = socialsecurityFS2;
+      document.getElementbyId("socialsecurityRS").innerHTML = socialsecurityRS;
       console.log(socialsecurityFS2);
       console.log(data);
     });
