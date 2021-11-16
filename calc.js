@@ -79,7 +79,7 @@ form.addEventListener("click", function (evt) {
       let grosswageFS = Number(data[0].fields.grosswageFS) * 100;
       let grosswageFS2 = grosswageFS.toFixed(2) + "%";
       let grosswageRS = "$" + Number(data[0].fields.grosswageRS).toFixed(2);
-      document.getElementById("grosswageFS").textContent = grosswageFS2;
+      document.getElementById("grosswageFC").textContent = grosswageFS2;
       document.getElementById("grosswageRS").textContent = grosswageRS;
       let scaleFS = Number(data[0].fields.scaleFS) * 100;
       let scaleFS2 = scaleFS.toFixed(2) + "%";
