@@ -4,6 +4,8 @@ const form = document.getElementById("form-submit");
 // Adds a listener for the "submit" event.
 form.addEventListener("click", function (evt) {
   evt.preventDefault();
+  document.getElementById("formwrapper").style.display = "none";
+  document.getElementById("loading").style.display = "flex";
   const productionState = document.getElementById("production-state").value;
   const unionValue = document.getElementById("union").value;
   const contractValue = document.getElementById("contract").value;
@@ -43,8 +45,6 @@ form.addEventListener("click", function (evt) {
   )
     .then(handleError)
     .then((data) => {
-      document.getElementById("formwrapper").style.display = "none";
-      document.getElementById("loading").style.display = "flex";
       let socialsecurityFS = Number(data[0].fields.socialsecurityFS) * 100;
       let socialsecurityFS2 = socialsecurityFS.toFixed(2) + "%";
       let socialsecurityRS =
@@ -112,6 +112,7 @@ form.addEventListener("click", function (evt) {
       console.log(data);
     })
     .finally(() => {
+      document.getElementById("data").style.display = "none";
       document.getElementById("result").style.display = "block";
     });
 });
