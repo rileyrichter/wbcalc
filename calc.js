@@ -49,8 +49,13 @@ form.addEventListener("click", function (evt) {
         "$" + Number(data[0].fields.socialsecurityRS).toFixed(2);
       document.getElementById("socialsecurityFS").textContent =
         socialsecurityFS2;
-      let ssresult = document.getElementById("socialsecurityRS");
-      ssresult.textContent = socialsecurityRS;
+      document.getElementById("socialsecurityRS").textContent =
+        socialsecurityRS;
+      let medicareFS = Number(data[0].fields.medicareFS) * 100;
+      let medicareFS2 = medicareFS.toFixed(2) + "%";
+      let medicareRS = "$" + Number(data[0].fields.medicareRS).toFixed(2);
+      document.getElementById("medicareFS").textContent = medicareFS2;
+      document.getElementById("medicareRS").textContent = medicareRS;
       console.log(data);
     });
 });
