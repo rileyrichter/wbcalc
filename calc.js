@@ -43,6 +43,8 @@ form.addEventListener("click", function (evt) {
   )
     .then(handleError)
     .then((data) => {
+      document.getElementById("formwrapper").style.display = "none";
+      document.getElementById("loading").style.display = "flex";
       let socialsecurityFS = Number(data[0].fields.socialsecurityFS) * 100;
       let socialsecurityFS2 = socialsecurityFS.toFixed(2) + "%";
       let socialsecurityRS =
@@ -108,5 +110,8 @@ form.addEventListener("click", function (evt) {
       document.getElementById("unionPC").textContent = unionPercent2;
       console.log(hoursRS);
       console.log(data);
+    })
+    .finally(() => {
+      document.getElementById("result").style.display = "block";
     });
 });
