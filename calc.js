@@ -47,9 +47,9 @@ form.addEventListener("click", function (evt) {
       let socialsecurityFS2 = socialsecurityFS.toFixed(2) + "%";
       let socialsecurityRS =
         "$" + Number(data[0].fields.socialsecurityRS).toFixed(2);
-      let ssbasis = document.getElementbyId("socialsecurityFS2");
-      ssbasis.textContent = socialsecurityFS2;
-      let ssresult = document.getElementbyId("socialsecurityRS");
+      document.getElementById("socialsecurityFS2").textContent =
+        socialsecurityFS2;
+      let ssresult = document.getElementById("socialsecurityRS");
       ssresult.textContent = socialsecurityRS;
 
       document.getElementbyId("socialsecurityRS").innerHTML = socialsecurityRS;
