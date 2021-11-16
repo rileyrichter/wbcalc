@@ -88,7 +88,7 @@ form.addEventListener("click", function (evt) {
       document.getElementById("scaleRS").textContent = scaleRS;
       let hoursFC = Number(data[0].fields.hoursFC);
       let hoursFC2 = "$" + hoursFC.toFixed(4);
-      let hoursRS = "$" + Number(data[0].fields.hoursRS).toFixed(2);
+      let hoursRS = "$" + Number(data[0].fields.hourRS).toFixed(2);
       document.getElementById("hoursFC").textContent = hoursFC2;
       document.getElementById("hoursRS").textContent = hoursRS;
       let wrapbookfee = Number(data[0].fields.wrapbookfee) * 100;
