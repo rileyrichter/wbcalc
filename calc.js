@@ -61,6 +61,11 @@ form.addEventListener("click", function (evt) {
       let futaRS = "$" + Number(data[0].fields.futaRS).toFixed(2);
       document.getElementById("futaFS").textContent = futaFS2;
       document.getElementById("futaRS").textContent = futaRS;
+      let suiFS = Number(data[0].fields.suiFS) * 100;
+      let suiFS2 = suiFS.toFixed(2) + "%";
+      let suiRS = "$" + Number(data[0].fields.suiRS).toFixed(2);
+      document.getElementById("suiFS").textContent = suiFS2;
+      document.getElementById("suiRS").textContent = suiRS;
       console.log(data);
     });
 });
