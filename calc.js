@@ -28,6 +28,10 @@ $(document).ready(function () {
       $("#contract").html(
         "<option value='recECrrLitsvmIMPw'>PHBP Commercial Agreement </option>"
       );
+    } else if (val == "nonunion") {
+      $("#hours-scale").hide();
+      $("#contract-wrapper").hide();
+      $("#contract").html("<option value=''>Non-Union</option>");
     }
   });
 });
