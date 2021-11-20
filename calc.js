@@ -36,7 +36,7 @@ $(document).ready(function () {
       $("#hours-scale").hide();
       $("#contract-wrapper").hide();
       $("#contract").html(
-        "<option value='recA5mMWVQECrIquK'>Non-Union</option>"
+        "<option value='recnvHz9k8uf20ovK'>Non-Union</option>"
       );
     }
   });
