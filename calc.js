@@ -189,6 +189,12 @@ form.addEventListener("click", function (evt) {
       document.getElementById("unionTOTAL").textContent = unionTotal;
       document.getElementById("unionPC").textContent = unionPercent2;
     })
+    .catch(function writeError(err) {
+      // catch the error and write it to the page
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("error").style.display = "block";
+      document.getElementById("status").textContent = err;
+    })
     .finally(() => {
       // Show the results section and hide the original form section
       document.getElementById("data").style.display = "none";
