@@ -125,7 +125,6 @@ form.addEventListener("click", function (evt) {
       // Get the dollar amount and put a dollar sign in front and set it to 2 decimals
       // Get the elements form percentage and amount and write to canvas
       // Rinse and repeat for each different element
-      // Note this varies a little for some lines
       let socialsecurityFS = Number(data[0].fields.socialsecurityFS) * 100;
       let socialsecurityFS2 = socialsecurityFS.toFixed(2) + "%";
       let socialsecurityRS =
