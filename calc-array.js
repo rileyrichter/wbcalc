@@ -3,52 +3,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Set the union select field as a var
   let unionSelect = document.getElementById("union");
   // When the union select field is changed, perform this function
+  let contractSelect = document.getElementById("contract");
   unionSelect.onchange = function () {
-    // Set all the Teamster options in an array
-    let teamsterOptions = [
-      {
-        text: "Teamster option 1",
-        value: "Teamster option 1 value",
-      },
-      {
-        text: "Teamster option 2",
-        value: "Teamster option 2 value",
-      },
-      {
-        text: "Teamster option 3",
-        value: "Teamster option 3 value",
-      },
-    ];
-    // Set all the DGA options in an array
-    let dgaOptions = [
-      {
-        text: "DGA option 1",
-        value: "DGA option 1 value",
-      },
-      {
-        text: "DGA option 2",
-        value: "DGA option 2 value",
-      },
-      {
-        text: "DGA option 3",
-        value: "DGA option 3 value",
-      },
-    ];
-    // Set all the PHBP options in an array
-    let phbpOptions = [
-      {
-        text: "PHBP option 1",
-        value: "PHBP option 1 value",
-      },
-      {
-        text: "PHBP option 2",
-        value: "PHBP option 2 value",
-      },
-      {
-        text: "PHBP option 3",
-        value: "PHBP option 3 value",
-      },
-    ];
     // Set val as the current value of the union select
     let val = this.value;
     // If they select SAG, then
@@ -73,8 +29,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
       // Hide the hours and scale options
       document.getElementById("hours-scale").style.display = "none";
       // Set the options of the select field
+      document.getElementById("contract").options.length = 0;
       sagOptions.forEach((option) =>
-        unionSelect.add(new Option(option.text, option.value, option.selected))
+        contractSelect.add(
+          new Option(option.text, option.value, option.selected)
+        )
       );
     } // If they select Iatse
     else if (val == "Iatse") {
@@ -98,8 +57,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
       // Show the hours and scale option
       document.getElementById("hours-scale").style.display = "block";
       // Set the options of the select field
+      document.getElementById("contract").options.length = 0;
       iatseOptions.forEach((option) =>
-        unionSelect.add(new Option(option.text, option.value, option.selected))
+        contractSelect.add(
+          new Option(option.text, option.value, option.selected)
+        )
       );
     } // If they select Teamsters
     else if (val == "Teamsters") {
