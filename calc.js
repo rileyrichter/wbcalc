@@ -3,63 +3,229 @@ window.addEventListener("DOMContentLoaded", (event) => {
   // Set the union select field as a var
   let unionSelect = document.getElementById("union");
   // When the union select field is changed, perform this function
+  let contractSelect = document.getElementById("contract");
   unionSelect.onchange = function () {
     // Set val as the current value of the union select
     let val = this.value;
     // If they select SAG, then
     if (val == "SAG") {
+      // Set all the SAG options in an array
+      let sagOptions = [
+        {
+          text: "SAG Commercial Agreement",
+          value: "recJcUe1ingx1E9IC",
+        },
+        {
+          text: "SAG Feature Principle Performer",
+          value: "recIZuhNI3x062FSm",
+        },
+        {
+          text: "SAG Feature Background Performer",
+          value: "recEhLkttesl6nGGD",
+        },
+        {
+          text: "SAG New Media Principle Performer",
+          value: "recP4r9xdeIRtWcGV",
+        },
+        {
+          text: "SAG New Media Background Performer",
+          value: "recgc46eTpiEOIdy1",
+        },
+        {
+          text: "SAG Sound Recording Performer",
+          value: "receoQJ0Vmjj0fG3j",
+        },
+        {
+          text: "SAG Video Game Principle Performer",
+          value: "recI81gISPSPT6oiU",
+        },
+      ];
       // Show the contract options
       document.getElementById("contract-wrapper").style.display = "block";
       // Hide the hours and scale options
       document.getElementById("hours-scale").style.display = "none";
-      // Set the options of the select field
-      document.getElementById("contract").innerHTML =
-        "<option value='recJcUe1ingx1E9IC'>SAG Commercial Agreement</option><option value='recIZuhNI3x062FSm'>SAG Feature Principle Performer</option><option value='recEhLkttesl6nGGD'>SAG Feature Background Performer</option><option value='recP4r9xdeIRtWcGV'>SAG New Media Principle Performer</option><option value='recgc46eTpiEOIdy1'>SAG New Media Background Performer</option><option value='receoQJ0Vmjj0fG3j'>SAG Sound Recording Performer</option><option value='recI81gISPSPT6oiU'>SAG Video Game Principle Performer</option>";
+      // Remove any options that are already set
+      document.getElementById("contract").options.length = 0;
+      // Set the options of the select field to SAG
+      sagOptions.forEach((option) =>
+        contractSelect.add(
+          new Option(option.text, option.value, option.selected)
+        )
+      );
     } // If they select Iatse
     else if (val == "Iatse") {
+      // Set all the IATSE options in an array
+      let iatseOptions = [
+        {
+          text: "IATSE Music Video Under 500K Budget",
+          value: "recPV7ftdEyawqrGM",
+        },
+        {
+          text: "IATSE Music Video Over 500K Budget",
+          value: "recpX1KKlgZug7UUW",
+        },
+        {
+          text: "IATSE NON-AICP Commercial LA",
+          value: "rec6Y6SAV1FWQbNLm",
+        },
+        {
+          text: "IATSE AICP Commercial LA",
+          value: "recGVp1TlnSW3HIKL",
+        },
+        {
+          text: "IATSE 161",
+          value: "recl7DhdXldFAhvDg",
+        },
+        {
+          text: "IATSE 600",
+          value: "recyQpdx2Gsd6OY2c",
+        },
+        {
+          text: "IATSE 52",
+          value: "recKchZAzKlpyEeZ6",
+        },
+        {
+          text: "IATSE 829",
+          value: "rec4bdVpcJNwUlSBw",
+        },
+        {
+          text: "IATSE 798",
+          value: "rec7CUeMBWZirirlo",
+        },
+      ];
       // Show the contract options
       document.getElementById("contract-wrapper").style.display = "block";
       // Show the hours and scale option
       document.getElementById("hours-scale").style.display = "block";
-      // Set the options of the select field
-      document.getElementById("contract").innerHTML =
-        "<option value='recpX1KKlgZug7UUW'>IATSE Music Video Over 500K Budget</option><option value='recPV7ftdEyawqrGM'>IATSE Music Video Under 500K Budget</option><option value='recGVp1TlnSW3HIKL'>IATSE AICP Commercial LA</option><option value='rec6Y6SAV1FWQbNLm'>IATSE NON-AICP Commercial LA</option><option value='recl7DhdXldFAhvDg'>IATSE 161</option><option value='recyQpdx2Gsd6OY2c'>IATSE 600</option><option value='recKchZAzKlpyEeZ6'>IATSE 52</option><option value='rec4bdVpcJNwUlSBw'>IATSE 829</option><option value='rec7CUeMBWZirirlo'>IATSE 798</option>";
+      // Remove any options that are already set
+      document.getElementById("contract").options.length = 0;
+      // Set the options of the select field to IATSE
+      iatseOptions.forEach((option) =>
+        contractSelect.add(
+          new Option(option.text, option.value, option.selected)
+        )
+      );
     } // If they select Teamsters
     else if (val == "Teamsters") {
+      // Set all the IATSE options in an array
+      let teamsterOptions = [
+        {
+          text: "Teamsters AICP Commercial LA Drivers",
+          value: "recSEWRh5YcLuo9xm",
+        },
+        {
+          text: "Teamsters NON-AICP Commercial LA Drivers",
+          value: "recp4Olh4lSZuAvOd",
+        },
+        {
+          text: "Teamsters AICP Commercial LA Location Managers",
+          value: "recxhDtZmODu7c2Ev",
+        },
+        {
+          text: "Teamsters NON-AICP Commercial Location Managers",
+          value: "recKhcNMMnl2tQfXR",
+        },
+        {
+          text: "Teamsters Music Video Under 500K Budget Drivers",
+          value: "rec7rTTc0siJi4OCX",
+        },
+        {
+          text: "Teamsters Music Video Over 500K Budget Drivers",
+          value: "rec6i5q4hjMyI34xO",
+        },
+        {
+          text: "Teamsters Music Video Under 500K Budget Location Managers",
+          value: "recqFDjSqxRZetBbl",
+        },
+        {
+          text: "Teamsters Music Video Over 500K Budget Location Managers",
+          value: "recUUKUnWTMxcJ7U1",
+        },
+        {
+          text: "Teamsters Music Video Music Video Agreement",
+          value: "recMr4PRZHlj4WF5a",
+        },
+        {
+          text: "Teamsters Music Video Commercial AICP Agreement",
+          value: "recqCROKTBz5umzyQ",
+        },
+      ];
       // Show the contract options
       document.getElementById("contract-wrapper").style.display = "block";
       // Show the hours and scale option
       document.getElementById("hours-scale").style.display = "block";
-      // Set the options of the select field
-      document.getElementById("contract").innerHTML =
-        "<option value='recSEWRh5YcLuo9xm'>Teamsters AICP Commercial LA Drivers</option><option value='recp4Olh4lSZuAvOd'> Teamsters NON-AICP Commercial LA Drivers</option><option value='recxhDtZmODu7c2Ev'> Teamsters AICP Commercial LA Location Managers</option><option value='recKhcNMMnl2tQfXR'> Teamsters NON-AICP Commercial Location Managers</option><option value='rec7rTTc0siJi4OCX'> Teamsters Music Video Under 500K Budget Drivers</option><option value='rec6i5q4hjMyI34xO'> Teamsters Music Video Over 500K Budget Drivers</option><option value='recqFDjSqxRZetBbl'> Teamsters Music Video Under 500K Budget Location Managers</option><option value='recUUKUnWTMxcJ7U1'> Teamsters Music Video Over 500K Budget Location Managers</option><option value='recMr4PRZHlj4WF5a'> Teamsters Music Video Music Video Agreement</option><option value='recqCROKTBz5umzyQ'> Teamsters Music Video Commercial AICP Agreement</option>";
+      // Remove any options that are already set
+      document.getElementById("contract").options.length = 0;
+      // Set the options of the select field to Teamsters
+      teamsterOptions.forEach((option) =>
+        contractSelect.add(
+          new Option(option.text, option.value, option.selected)
+        )
+      );
     } // If they select DGA
     else if (val == "DGA") {
+      // Set all the DGA options in an array
+      let dgaOptions = [
+        {
+          text: "DGA Commercial AICP Agreement",
+          value: "recn2B0dJl28OJNwL",
+        },
+      ];
       // Show the contract options
       document.getElementById("contract-wrapper").style.display = "block";
       // Hide the hours and scale options
       document.getElementById("hours-scale").style.display = "none";
-      // Set the options of the select field
-      document.getElementById("contract").innerHTML =
-        "<option value='recn2B0dJl28OJNwL'>DGA Commercial AICP Agreement</option>";
+      // Remove any options that are already set
+      document.getElementById("contract").options.length = 0;
+      // Set the options of the select field to Teamsters
+      dgaOptions.forEach((option) =>
+        contractSelect.add(
+          new Option(option.text, option.value, option.selected)
+        )
+      );
     } // If they select PHBP
     else if (val == "PHBP") {
+      // Set all the PHBP options in an array
+      let phbpOptions = [
+        {
+          text: "PHBP Commercial Agreement",
+          value: "recECrrLitsvmIMPw",
+        },
+      ];
       // Show the contract options
       document.getElementById("contract-wrapper").style.display = "block";
       // Hide the hours and scale options
       document.getElementById("hours-scale").style.display = "none";
-      // Set the options of the select field
-      document.getElementById("contract").innerHTML =
-        "<option value='recECrrLitsvmIMPw'>PHBP Commercial Agreement </option>";
+      // Remove any options that are already set
+      document.getElementById("contract").options.length = 0;
+      // Set the options of the select field to Teamsters
+      phbpOptions.forEach((option) =>
+        contractSelect.add(
+          new Option(option.text, option.value, option.selected)
+        )
+      );
     } // If they select nonunion
     else if (val == "nonunion") {
+      // Set all the non-union options in an array
+      let nuOptions = [
+        {
+          text: "Non-Union",
+          value: "recnvHz9k8uf20ovK",
+        },
+      ];
       // Hide the contract options
       document.getElementById("contract-wrapper").style.display = "none";
       // Hide the hours and scale options
       document.getElementById("hours-scale").style.display = "none";
       // Set a nonunion option for contract to make the API call work as expected
-      document.getElementById("contract").innerHTML =
-        "<option value='recnvHz9k8uf20ovK'>Non-Union</option>";
+      // Remove any options that are already set
+      document.getElementById("contract").options.length = 0;
+      // Set the options of the select field to Teamsters
+      nuOptions.forEach((option) =>
+        contractSelect.add(
+          new Option(option.text, option.value, option.selected)
+        )
+      );
     }
   };
 });
