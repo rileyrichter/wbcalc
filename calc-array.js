@@ -4,36 +4,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   let unionSelect = document.getElementById("union");
   // When the union select field is changed, perform this function
   unionSelect.onchange = function () {
-    // Set all the SAG options in an array
-    let sagOptions = [
-      {
-        text: "SAG option 1",
-        value: "SAG option 1 value",
-      },
-      {
-        text: "SAG option 2",
-        value: "SAG option 2 value",
-      },
-      {
-        text: "SAG option 3",
-        value: "SAG option 3 value",
-      },
-    ];
-    // Set all the IATSE options in an array
-    let iatseOptions = [
-      {
-        text: "IATSE option 1",
-        value: "IATSE option 1 value",
-      },
-      {
-        text: "IATSE option 2",
-        value: "IATSE option 2 value",
-      },
-      {
-        text: "IATSE option 3",
-        value: "IATSE option 3 value",
-      },
-    ];
     // Set all the Teamster options in an array
     let teamsterOptions = [
       {
@@ -83,6 +53,21 @@ window.addEventListener("DOMContentLoaded", (event) => {
     let val = this.value;
     // If they select SAG, then
     if (val == "SAG") {
+      // Set all the SAG options in an array
+      let sagOptions = [
+        {
+          text: "SAG option 1",
+          value: "SAG option 1 value",
+        },
+        {
+          text: "SAG option 2",
+          value: "SAG option 2 value",
+        },
+        {
+          text: "SAG option 3",
+          value: "SAG option 3 value",
+        },
+      ];
       // Show the contract options
       document.getElementById("contract-wrapper").style.display = "block";
       // Hide the hours and scale options
@@ -93,6 +78,21 @@ window.addEventListener("DOMContentLoaded", (event) => {
       );
     } // If they select Iatse
     else if (val == "Iatse") {
+      // Set all the IATSE options in an array
+      let iatseOptions = [
+        {
+          text: "IATSE option 1",
+          value: "IATSE option 1 value",
+        },
+        {
+          text: "IATSE option 2",
+          value: "IATSE option 2 value",
+        },
+        {
+          text: "IATSE option 3",
+          value: "IATSE option 3 value",
+        },
+      ];
       // Show the contract options
       document.getElementById("contract-wrapper").style.display = "block";
       // Show the hours and scale option
