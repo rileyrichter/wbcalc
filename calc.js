@@ -241,6 +241,7 @@ form.addEventListener("click", function (evt) {
   // document.getElementById("formwrapper").style.display = "none";
   // Show the loading div
   document.getElementById("loading").style.display = "flex";
+  document.getElementById("result").style.display = "none";
 
   // Get the values in the form and set them as variables, converting some to numbers for the API calls
   const productionState = document.getElementById("production-state").value;
@@ -368,9 +369,4 @@ form.addEventListener("click", function (evt) {
       document.getElementById("result").style.display = "block";
       document.getElementById("loading").style.display = "none";
     });
-});
-
-// Click the button to refresh the page and start over
-document.getElementById("again").addEventListener("click", () => {
-  location.reload();
 });
