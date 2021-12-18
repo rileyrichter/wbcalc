@@ -44,6 +44,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
       document.getElementById("contract-wrapper").style.display = "block";
       // Hide the hours and scale options
       document.getElementById("hours-scale").style.display = "none";
+      document.getElementById("hours").value = "";
+      document.getElementById("scale").value = "";
       // Remove any options that are already set
       document.getElementById("contract").options.length = 0;
       // Set the options of the select field to SAG
@@ -175,6 +177,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
       document.getElementById("contract-wrapper").style.display = "block";
       // Hide the hours and scale options
       document.getElementById("hours-scale").style.display = "none";
+      document.getElementById("hours").value = "";
+      document.getElementById("scale").value = "";
       // Remove any options that are already set
       document.getElementById("contract").options.length = 0;
       // Set the options of the select field to Teamsters
@@ -196,6 +200,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
       document.getElementById("contract-wrapper").style.display = "block";
       // Hide the hours and scale options
       document.getElementById("hours-scale").style.display = "none";
+      document.getElementById("hours").value = "";
+      document.getElementById("scale").value = "";
       // Remove any options that are already set
       document.getElementById("contract").options.length = 0;
       // Set the options of the select field to Teamsters
@@ -217,6 +223,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
       document.getElementById("contract-wrapper").style.display = "none";
       // Hide the hours and scale options
       document.getElementById("hours-scale").style.display = "none";
+      document.getElementById("hours").value = "";
+      document.getElementById("scale").value = "";
       // Set a nonunion option for contract to make the API call work as expected
       // Remove any options that are already set
       document.getElementById("contract").options.length = 0;
