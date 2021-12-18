@@ -96,7 +96,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
       // Show the contract options
       document.getElementById("contract-wrapper").style.display = "block";
       // Show the hours and scale option
-      document.getElementById("hours-scale").style.display = "block";
+      document.getElementById("hours-scale").style.display = "flex";
       // Remove any options that are already set
       document.getElementById("contract").options.length = 0;
       // Set the options of the select field to IATSE
@@ -153,7 +153,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
       // Show the contract options
       document.getElementById("contract-wrapper").style.display = "block";
       // Show the hours and scale option
-      document.getElementById("hours-scale").style.display = "block";
+      document.getElementById("hours-scale").style.display = "flex";
       // Remove any options that are already set
       document.getElementById("contract").options.length = 0;
       // Set the options of the select field to Teamsters
