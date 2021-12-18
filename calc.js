@@ -115,11 +115,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
         },
         {
           text: "Teamsters NON-AICP Commercial LA Drivers",
-          value: "recloVBc2sD1HlQsy",
+          value: "rec0bx9HkqaYI56jU",
         },
         {
           text: "Teamsters AICP Commercial LA Location Managers",
-          value: "recxhDtZmODu7c2Ev",
+          value: "rec8omhpCTVtlHD9c",
         },
         {
           text: "Teamsters NON-AICP Commercial Location Managers",
@@ -147,7 +147,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         },
         {
           text: "Teamsters Music Video Commercial AICP Agreement",
-          value: "recqCROKTBz5umzyQ",
+          value: "rec1JACa9GR4IRa3x",
         },
       ];
       // Show the contract options
