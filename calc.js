@@ -238,7 +238,7 @@ form.addEventListener("click", function (evt) {
   // Don't let the form submit
   evt.preventDefault();
   // Hide the form
-  document.getElementById("formwrapper").style.display = "none";
+  // document.getElementById("formwrapper").style.display = "none";
   // Show the loading div
   document.getElementById("loading").style.display = "flex";
 
