@@ -123,7 +123,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         },
         {
           text: "Teamsters NON-AICP Commercial Location Managers",
-          value: "recKhcNMMnl2tQfXR",
+          value: "recloVBc2sD1HlQsy",
         },
         {
           text: "Teamsters Music Video Under 500K Budget Drivers",
@@ -359,6 +359,7 @@ form.addEventListener("click", function (evt) {
     })
     .catch(function writeError(err) {
       // catch the error and write it to the page
+      document.getElementById("result").style.display = "none";
       document.getElementById("loading").style.display = "none";
       document.getElementById("error").style.display = "block";
       document.getElementById("status").textContent = err;
