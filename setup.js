@@ -5,7 +5,7 @@ const projects = document.getElementById("project");
 const stepTwo = document.getElementById("step-two");
 
 next.addEventListener("click", (event) => {
-  let email = document.getElementById("email-2").value;
+  let email = document.getElementById("email").value;
   localStorage.setItem("email", email);
   emailGate.style.display = "none";
   projDetails.style.display = "block";
