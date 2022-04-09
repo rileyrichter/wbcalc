@@ -19,13 +19,14 @@ projects.onchange = function () {
 
 next.onclick = (e) => {
   // e.preventDefault();
-  localStorage.setItem("email", email);
+  emailValue = email.value;
+  localStorage.setItem("email", emailValue);
   emailGate.style.display = "none";
   projDetails.style.display = "block";
 };
 
 projSubmit.onclick = (e) => {
-  e.preventDefault();
+  //e.preventDefault();
   let projectTypeValue = projectType.value;
   let prodLocationValue = prodLocation.value;
   let daysValue = days.value;
@@ -40,7 +41,7 @@ projSubmit.onclick = (e) => {
   localStorage.setItem("handling-fee", handlingFeeValue);
   localStorage.setItem("union", unionValue);
   localStorage.setItem("contract", contractValue);
-  window.location.assign(`/rate-sheet`);
+  //window.location.assign(`/rate-sheet`);
 };
 
 window.addEventListener("DOMContentLoaded", (event) => {
