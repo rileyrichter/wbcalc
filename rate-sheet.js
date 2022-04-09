@@ -66,11 +66,9 @@ window.addEventListener("DOMContentLoaded", (event) => {
       // catches the error and logs it
     })
     .finally(() => {
-      // last step
       dataRow.remove();
       document.querySelectorAll(".grid-row").forEach((item) => {
         item.addEventListener("click", (event) => {
-          //handle click
           calcModal.style.display = "flex";
           console.log(item.id);
         });
