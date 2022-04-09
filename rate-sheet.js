@@ -3,7 +3,6 @@ const dataRow = document.getElementById("data_row");
 const union = localStorage.getItem("union");
 const calcModal = document.getElementById("modal");
 const closeModal = document.getElementById("close");
-let rateRows = [];
 
 // On document ready, let's fetch some data
 window.addEventListener("DOMContentLoaded", (event) => {
@@ -69,19 +68,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
     .finally(() => {
       // last step
       dataRow.remove();
-      updateRateRows();
+      document.querySelectorAll(".div.grid-row").forEach((item) => {
+        item.addEventListener("click", (event) => {
+          //handle click
+          calcModal.style.display = "flex";
+          console.log(this.id);
+        });
+      });
     });
-});
-
-function updateRateRows() {
-  rateRows.push(document.querySelectorAll("div.grid-row"));
-}
-
-rateRows.forEach((row) => {
-  row.addEventListener("click", (event) => {
-    calcModal.style.display = "flex";
-    console.log(this.id);
-  });
 });
 
 closeModal.onclick = (e) => {
