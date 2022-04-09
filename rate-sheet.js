@@ -77,10 +77,12 @@ function updateRateRows() {
   rateRows.push(document.querySelectorAll("div.grid-row"));
 }
 
-rateRows.onclick = (e) => {
-  calcModal.style.display = "flex";
-  console.log(this.id);
-};
+rateRows.forEach((row) => {
+  row.addEventListener("click", (event) => {
+    calcModal.style.display = "flex";
+    console.log(this.id);
+  });
+});
 
 closeModal.onclick = (e) => {
   calcModal.style.display = "none";
