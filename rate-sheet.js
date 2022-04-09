@@ -1,6 +1,8 @@
-let root = document.getElementById("root");
-let dataRow = document.getElementById("data_row");
-let union = localStorage.getItem("union");
+const root = document.getElementById("root");
+const dataRow = document.getElementById("data_row");
+const union = localStorage.getItem("union");
+const calcModal = document.getElementById("modal");
+const closeModal = document.getElementById("close");
 
 // On document ready, let's fetch some data
 window.addEventListener("DOMContentLoaded", (event) => {
@@ -66,5 +68,15 @@ window.addEventListener("DOMContentLoaded", (event) => {
     .finally(() => {
       // last step
       dataRow.remove();
+      let rateRows = document.querySelectorAll("div.grid-row");
     });
 });
+
+rateRows.onclick = (e) => {
+  calcModal.style.display = "flex";
+  console.log(this.id);
+};
+
+closeModal.onclick = (e) => {
+  calcModal.style.display = "none";
+};
