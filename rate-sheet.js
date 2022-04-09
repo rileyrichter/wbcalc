@@ -1,16 +1,7 @@
 let root = document.getElementById("root");
 let dataRow = document.getElementById("data_row");
-/*
-let gate = document.getElementById("gate");
-let gateSubmit = document.getElementById("begin submit");
-​
-gateSubmit.onclick = (e) => {
-  e.preventDefault();
-  gate.style.display("none");
-  localStorage.setItem("email", "true");
-};
-*/
-​
+let union = localStorage.getItem("union");
+
 // On document ready, let's fetch some data
 window.addEventListener("DOMContentLoaded", (event) => {
   const handleError = (response) => {
@@ -20,9 +11,9 @@ window.addEventListener("DOMContentLoaded", (event) => {
       return response.json();
     }
   }; //handler function that throws any encountered error
-​
+
   fetch(
-    "https://v1.nocodeapi.com/rileyrichter/airtable/kXGRAuNEuUpInekU?tableName=positions&view=500_over&perPage=all"
+    `https://v1.nocodeapi.com/rileyrichter/airtable/kXGRAuNEuUpInekU?tableName=positions&view=${union}&perPage=all`
   )
     .then(handleError) // skips to .catch if error is thrown
     .then((data) => {
