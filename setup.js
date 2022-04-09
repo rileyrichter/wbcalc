@@ -25,7 +25,7 @@ next.onclick = (e) => {
 };
 
 projSubmit.onclick = (e) => {
-  // e.preventDefault();
+  e.preventDefault();
   let projectTypeValue = projectType.value;
   let prodLocationValue = prodLocation.value;
   let daysValue = days.value;
@@ -40,7 +40,7 @@ projSubmit.onclick = (e) => {
   localStorage.setItem("handling-fee", handlingFeeValue);
   localStorage.setItem("union", unionValue);
   localStorage.setItem("contract", contractValue);
-  // window.location.assign(`/rate-sheet`);
+  window.location.assign(`/rate-sheet`);
 };
 
 window.addEventListener("DOMContentLoaded", (event) => {
