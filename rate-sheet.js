@@ -68,11 +68,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
     .finally(() => {
       // last step
       dataRow.remove();
-      document.querySelectorAll(".div.grid-row").forEach((item) => {
+      document.querySelectorAll(".grid-row").forEach((item) => {
         item.addEventListener("click", (event) => {
           //handle click
           calcModal.style.display = "flex";
-          console.log(this.id);
+          console.log(item.id);
         });
       });
     });
