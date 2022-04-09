@@ -4,7 +4,7 @@ const projDetails = document.getElementById("details");
 const projects = document.getElementById("project");
 const stepTwo = document.getElementById("step-two");
 
-next.addEventListener("click", (event) => {
+submitEmailButton.addEventListener("click", (e) => {
   let email = document.getElementById("email").value;
   localStorage.setItem("email", email);
   emailGate.style.display = "none";
