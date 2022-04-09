@@ -12,6 +12,7 @@ const hours = document.getElementById("hours");
 const handlingFee = document.getElementById("handling-fee");
 const prodLocation = document.getElementById("production-state");
 const projSubmit = document.getElementById("form-submit");
+const projEmail = document.getElementById("emailproj");
 
 projects.onchange = function () {
   stepTwo.style.display = "block";
@@ -27,6 +28,8 @@ next.onclick = (e) => {
 
 projSubmit.onclick = (e) => {
   //e.preventDefault();
+  let submitEmail = localStorage.getItem("email");
+  projEmail.value = submitEmail;
   let projectTypeValue = projectType.value;
   let prodLocationValue = prodLocation.value;
   let daysValue = days.value;
