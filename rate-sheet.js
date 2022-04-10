@@ -34,7 +34,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
         } else {
           unionLocal.innerText = record.fields.union_local;
         }
-        unionLocal.innerText = record.fields.union_local;
         let hourlyRate = newRow.getElementsByClassName("hourly-rate")[0];
         hourlyRate.innerText = record.fields.hourly_rate;
 
