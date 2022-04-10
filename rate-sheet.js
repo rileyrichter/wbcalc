@@ -35,12 +35,10 @@ window.addEventListener("DOMContentLoaded", (event) => {
           unionLocal.innerText = record.fields.union_local;
         }
         let hourlyRate = newRow.getElementsByClassName("hourly-rate")[0];
-        if (record.fields.hourlyRate === `negotiable`) {
-          hourlyRate.innerText = `negotiable`;
-        } else if (record.fields.hourly_rate == null) {
-          hourlyRate.innerText = `\u2014`;
+        if (record.fields.hourly_rate != null) {
+          hourlyRate.innerText = record.fields.hourly_rate;
         } else {
-          hourlyRate.innerText = `$ ${record.fields.hourly_rate.toFixed(2)}`;
+          hourlyRate.innerText = `\u2014`;
         }
         let eightHours = newRow.getElementsByClassName("eight-hours")[0];
         if (record.fields.eight_hours == null) {
