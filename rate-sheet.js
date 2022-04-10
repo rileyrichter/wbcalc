@@ -29,6 +29,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
         let jobTitle = newRow.getElementsByClassName("position")[0];
         jobTitle.innerText = record.fields.job_title;
         let unionLocal = newRow.getElementsByClassName("union-local")[0];
+        if (record.fields.union_local == null) {
+          unionLocal.innerText = `\u2014`;
+        } else {
+          unionLocal.innerText = record.fields.union_local;
+        }
         unionLocal.innerText = record.fields.union_local;
         let hourlyRate = newRow.getElementsByClassName("hourly-rate")[0];
         hourlyRate.innerText = record.fields.hourly_rate;
