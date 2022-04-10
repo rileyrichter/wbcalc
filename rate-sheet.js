@@ -33,7 +33,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         let hourlyRate = newRow.getElementsByClassName("hourly-rate")[0];
         if (record.fields.hourly_rate == null) {
           hourlyRate.innerText = `\u2014`;
-        } else if (record.fields.hourlyRate == "negotiable") {
+        } else if (record.fields.hourlyRate === `negotiable`) {
           hourlyRate.innerText = `negotiable`;
         } else {
           hourlyRate.innerText = `$ ${record.fields.hourly_rate.toFixed(2)}`;
