@@ -3,21 +3,24 @@ const dataRow = document.getElementById("data_row");
 const union = localStorage.getItem("union");
 const calcModal = document.getElementById("modal");
 const closeModal = document.getElementById("close");
+const loadingDiv = document.getElementById("loading");
 
-// On document ready, let's fetch some data
 window.addEventListener("DOMContentLoaded", (event) => {
+  if (union == null) {
+    window.location.assign(`/begin`);
+  }
   const handleError = (response) => {
     if (!response.ok) {
       throw Error(` ${response.status} ${response.statusText}`);
     } else {
       return response.json();
     }
-  }; //handler function that throws any encountered error
+  };
 
   fetch(
     `https://v1.nocodeapi.com/rileyrichter/airtable/kXGRAuNEuUpInekU?tableName=positions&view=${union}&perPage=all`
   )
-    .then(handleError) // skips to .catch if error is thrown
+    .then(handleError)
     .then((data) => {
       data.records.forEach((record) => {
         // do something here
@@ -67,6 +70,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
     })
     .finally(() => {
       dataRow.remove();
+      root.classList.add("fade-in");
+      loadingDiv.remove();
       document.querySelectorAll(".grid-row").forEach((item) => {
         item.addEventListener("click", (event) => {
           calcModal.style.display = "flex";
