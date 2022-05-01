@@ -42,8 +42,8 @@ projectSelect.onchange = function () {
 };
 
 fringeEdit.onclick = (e) => {
-  fringeForm.style.display = "block";
-  fringeDescription.style.display = "flex";
+  fringeForm.style.display = "flex";
+  fringeDescription.style.display = "none";
 };
 
 next.onclick = (e) => {
