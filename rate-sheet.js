@@ -28,7 +28,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
         let jobTitle = newRow.getElementsByClassName("position")[0];
         jobTitle.innerText = record.fields.job_title;
         let unionLocal = newRow.getElementsByClassName("union-local")[0];
-        console.log(unionLocal);
         if (record.fields.union_local == null) {
           unionLocal.innerText = `\u2014`;
         } else {
