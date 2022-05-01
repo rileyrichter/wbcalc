@@ -18,7 +18,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   };
 
   fetch(
-    `https://v1.nocodeapi.com/rileyrichter/airtable/kXGRAuNEuUpInekU?tableName=positions&view=${union}&perPage=all`
+    `https://v1.nocodeapi.com/rileyrichter/airtable/QXbLoLHUXKiRdAdi?tableName=positions&view=${union}&perPage=all`
   )
     .then(handleError)
     .then((data) => {
