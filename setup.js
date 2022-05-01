@@ -43,7 +43,7 @@ projectSelect.onchange = function () {
 
 fringeEdit.onclick = (e) => {
   fringeForm.style.display = "block";
-  fringeDescription.style.display = "none";
+  fringeDescription.style.display = "flex";
 };
 
 next.onclick = (e) => {
