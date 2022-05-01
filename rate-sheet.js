@@ -6,7 +6,7 @@ const closeModal = document.getElementById("close");
 const loadingDiv = document.getElementById("loading");
 const taxesValue = localStorage.getItem("project-location");
 const contractValue = localStorage.getItem("contract");
-const hoursValue = localStorage.getItem("hours");
+const hoursValue = Number(localStorage.getItem("hours"));
 
 window.addEventListener("DOMContentLoaded", (event) => {
   if (union == null) {
@@ -63,10 +63,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
       root.classList.add("fade-in");
       loadingDiv.remove();
       document.querySelectorAll(".grid-row").forEach((item) => {
-        const wagesNumber = item.closest(".twelvel-hours").innerText;
-        console.log(wagesNumber);
-        wagesNumber.split("$");
-        wagesValue = wagesNumber[1];
         item.addEventListener("click", (event) => {
           calcModal.style.display = "flex";
           console.log(item.id);
@@ -87,13 +83,15 @@ window.addEventListener("DOMContentLoaded", (event) => {
           // Set the headers for the API call
           let myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
+          const wagesNumber = item.querySelector(".twelvel-hours").innerText;
+          wagesValue = Number(wagesNumber.split("$").pop());
           let requestOptions = {
             method: "post",
             headers: myHeaders,
             redirect: "follow",
             body: JSON.stringify([
               {
-                taxes: [productionState],
+                taxes: [taxesValue],
                 wages: wagesValue,
                 contracts: [contractValue],
                 hours: hoursValue,
