@@ -63,7 +63,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
       root.classList.add("fade-in");
       loadingDiv.remove();
       document.querySelectorAll(".grid-row").forEach((item) => {
-        const wagesNumber = item.closest("#twelve_hours").nodeValue;
+        const wagesNumber = item.closest(".twelvel-hours").innerText;
+        console.log(wagesNumber);
         wagesNumber.split("$");
         wagesValue = wagesNumber[1];
         item.addEventListener("click", (event) => {
