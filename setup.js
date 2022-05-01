@@ -12,6 +12,9 @@ const handlingFee = document.getElementById("handling-fee");
 const stateSelect = document.getElementById("production-state");
 const projSubmit = document.getElementById("form-submit");
 const projEmail = document.getElementById("emailproj");
+const fringeEdit = document.getElementById("fringe-edit");
+const fringeForm = document.getElementById("fringe");
+const fringeDescription = document.getElementById("fringe-description");
 const sagContract = "sag";
 const phbpContract = "phbp";
 const teamstersContract = "teamsters";
@@ -29,10 +32,18 @@ window.addEventListener("DOMContentLoaded", (event) => {
   addProjectsToSelect();
   addUnionsToSelect();
   addLocationsToSelect();
+  days.value = 1;
+  hours.value = 12;
+  handlingFee.value = 2;
 });
 
 projectSelect.onchange = function () {
   stepTwo.style.display = "block";
+};
+
+fringeEdit.onclick = (e) => {
+  fringeForm.style.display = "block";
+  fringeDescription.style.display = "none";
 };
 
 next.onclick = (e) => {
