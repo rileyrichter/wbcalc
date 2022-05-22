@@ -5,11 +5,13 @@ const calcModal = document.getElementById("modal");
 const closeModal = document.getElementById("close");
 const loadingDiv = document.getElementById("loading");
 const taxesValue = localStorage.getItem("project-location");
+const taxesData = localStorage.getItem("project-location-id");
 const contractValue = localStorage.getItem("contract");
+const contractName = localStorage.getItem("contract-name");
 const hoursValue = Number(localStorage.getItem("hours"));
 
 window.addEventListener("DOMContentLoaded", (event) => {
-  if (union == null) {
+  if (contractName == null) {
     window.location.assign(`/begin`);
   }
   const handleError = (response) => {
@@ -20,12 +22,19 @@ window.addEventListener("DOMContentLoaded", (event) => {
     }
   };
 
-  fetch(
-    `https://v1.nocodeapi.com/rileyrichter/airtable/QXbLoLHUXKiRdAdi?tableName=positions&view=${union}&perPage=all`
-  )
+  fetch(`https://dev--wrapbook.bparker.autocode.gg/positions/`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      Contract: `\'${contractName}\'`,
+    }),
+  })
     .then(handleError)
     .then((data) => {
-      data.records.forEach((record) => {
+      data.forEach((record) => {
         let newRow = dataRow.cloneNode(true);
         newRow.id = record.id;
         let jobTitle = newRow.getElementsByClassName("position")[0];
@@ -65,7 +74,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
       document.querySelectorAll(".grid-row").forEach((item) => {
         item.addEventListener("click", (event) => {
           calcModal.style.display = "flex";
-          console.log(item.id);
           document.getElementById("calc-loading").style.display = "flex";
           document.getElementById("results").style.display = "none";
 
@@ -89,95 +97,86 @@ window.addEventListener("DOMContentLoaded", (event) => {
             method: "post",
             headers: myHeaders,
             redirect: "follow",
-            body: JSON.stringify([
-              {
-                taxes: [taxesValue],
-                wages: wagesValue,
-                contracts: [contractValue],
-                hours: hoursValue,
-                scalerate: 100,
-                wrapbookfee: 0.0149,
-              },
-            ]),
+            body: JSON.stringify({
+              taxes: [taxesData],
+              wages: wagesValue,
+              contracts: [contractValue],
+              hours: hoursValue,
+              scalerate: 100,
+              wrapbookfee: 0.0149,
+            }),
           };
 
           // Make the API call with the endpoint and the options
           fetch(
-            "https://v1.nocodeapi.com/rileyrichter/airtable/QXbLoLHUXKiRdAdi?tableName=requests",
+            "https://dev--wrapbook.bparker.autocode.gg/requests/",
             requestOptions
           )
             .then(handleError) // If there's an error, skip to the end and display it on canvas
             .then((data) => {
-              let socialsecurityFS =
-                Number(data[0].fields.socialsecurityFS) * 100;
+              let socialsecurityFS = Number(data.socialsecurityFS) * 100;
               let socialsecurityFS2 = socialsecurityFS.toFixed(2) + "%";
               let socialsecurityRS =
-                "$" + Number(data[0].fields.socialsecurityRS).toFixed(2);
+                "$" + Number(data.socialsecurityRS).toFixed(2);
               document.getElementById("socialsecurityFS").textContent =
                 socialsecurityFS2;
               document.getElementById("socialsecurityRS").textContent =
                 socialsecurityRS;
-              let medicareFS = Number(data[0].fields.medicareFS) * 100;
+              let medicareFS = Number(data.medicareFS) * 100;
               let medicareFS2 = medicareFS.toFixed(2) + "%";
-              let medicareRS =
-                "$" + Number(data[0].fields.medicareRS).toFixed(2);
+              let medicareRS = "$" + Number(data.medicareRS).toFixed(2);
               document.getElementById("medicareFS").textContent = medicareFS2;
               document.getElementById("medicareRS").textContent = medicareRS;
-              let futaFS = Number(data[0].fields.futaFS) * 100;
+              let futaFS = Number(data.futaFS) * 100;
               let futaFS2 = futaFS.toFixed(2) + "%";
-              let futaRS = "$" + Number(data[0].fields.futaRS).toFixed(2);
+              let futaRS = "$" + Number(data.futaRS).toFixed(2);
               document.getElementById("futaFS").textContent = futaFS2;
               document.getElementById("futaRS").textContent = futaRS;
-              let suiFS = Number(data[0].fields.suiFS) * 100;
+              let suiFS = Number(data.suiFS) * 100;
               let suiFS2 = suiFS.toFixed(2) + "%";
-              let suiRS = "$" + Number(data[0].fields.suiRS).toFixed(2);
+              let suiRS = "$" + Number(data.suiRS).toFixed(2);
               document.getElementById("suiFS").textContent = suiFS2;
               document.getElementById("suiRS").textContent = suiRS;
-              let localtaxesFS = Number(data[0].fields.localtaxesFS) * 100;
+              let localtaxesFS = Number(data.localtaxesFS) * 100;
               let localtaxesFS2 = localtaxesFS.toFixed(2) + "%";
-              let localtaxesRS =
-                "$" + Number(data[0].fields.localtaxesRS).toFixed(2);
+              let localtaxesRS = "$" + Number(data.localtaxesRS).toFixed(2);
               document.getElementById("localtaxesFS").textContent =
                 localtaxesFS2;
               document.getElementById("localtaxesRS").textContent =
                 localtaxesRS;
-              let wcFS = Number(data[0].fields.wcFS) * 100;
+              let wcFS = Number(data.wcFS) * 100;
               let wcFS2 = wcFS.toFixed(2) + "%";
-              let wcRS = "$" + Number(data[0].fields.wcRS).toFixed(2);
+              let wcRS = "$" + Number(data.wcRS).toFixed(2);
               document.getElementById("wcFS").textContent = wcFS2;
               document.getElementById("wcRS").textContent = wcRS;
-              let grosswageFS = Number(data[0].fields.grosswageFS) * 100;
+              let grosswageFS = Number(data.grosswageFS) * 100;
               let grosswageFS2 = grosswageFS.toFixed(2) + "%";
-              let grosswageRS =
-                "$" + Number(data[0].fields.grosswageRS).toFixed(2);
+              let grosswageRS = "$" + Number(data.grosswageRS).toFixed(2);
               document.getElementById("grosswageFC").textContent = grosswageFS2;
               document.getElementById("grosswageRS").textContent = grosswageRS;
-              let scaleFS = Number(data[0].fields.scaleFS) * 100;
+              let scaleFS = Number(data.scaleFS) * 100;
               let scaleFS2 = scaleFS.toFixed(2) + "%";
-              let scaleRS = "$" + Number(data[0].fields.scaleRS).toFixed(2);
+              let scaleRS = "$" + Number(data.scaleRS).toFixed(2);
               document.getElementById("scaleFS").textContent = scaleFS2;
               document.getElementById("scaleRS").textContent = scaleRS;
-              let hoursFC = Number(data[0].fields.hoursFC);
-              let hoursFC2 = "$" + hoursFC.toFixed(4);
-              let hoursRS = "$" + Number(data[0].fields.hourRS).toFixed(2);
+              let hoursFC = Number(data.hoursFC);
+              let hoursFC2 = "$" + hoursFC.toFixed(2);
+              let hoursRS = "$" + Number(data.hourRS).toFixed(2);
               document.getElementById("hoursFC").textContent = hoursFC2;
               document.getElementById("hoursRS").textContent = hoursRS;
-              let wrapbookfee = Number(data[0].fields.wrapbookfee) * 100;
+              let wrapbookfee = Number(data.wrapbookfee) * 100;
               let wrapbookfee2 = wrapbookfee.toFixed(2) + "%";
-              let wrapbookRS =
-                "$" + Number(data[0].fields.wrapbookRS).toFixed(2);
+              let wrapbookRS = "$" + Number(data.wrapbookRS).toFixed(2);
               document.getElementById("wrapbookfee").textContent = wrapbookfee2;
               document.getElementById("wrapbookRS").textContent = wrapbookRS;
-              let fringeBasis = Number(data[0].fields.fringeBASIS) * 100;
+              let fringeBasis = Number(data.fringeBASIS) * 100;
               let fringeBasis2 = fringeBasis.toFixed(2) + "%";
-              let fringeRS =
-                "$" + Number(data[0].fields.fringeTOTAL).toFixed(2);
+              let fringeRS = "$" + Number(data.fringeTOTAL).toFixed(2);
               document.getElementById("fringeBASIS").textContent = fringeBasis2;
               document.getElementById("fringeTOTAL").textContent = fringeRS;
-              let unionPercent = Number(data[0].fields.unionPC) * 100;
+              let unionPercent = Number(data.unionPC) * 100;
               let unionPercent2 = unionPercent.toFixed(2) + "%";
-              let unionTotal =
-                "$" + Number(data[0].fields.unionTOTAL).toFixed(2);
+              let unionTotal = "$" + Number(data.unionTOTAL).toFixed(2);
               document.getElementById("unionTOTAL").textContent = unionTotal;
               document.getElementById("unionPC").textContent = unionPercent2;
             })

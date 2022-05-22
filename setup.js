@@ -15,11 +15,15 @@ const projEmail = document.getElementById("emailproj");
 const fringeEdit = document.getElementById("fringe-edit");
 const fringeForm = document.getElementById("fringe");
 const fringeDescription = document.getElementById("fringe-description");
-const sagContract = "sag";
-const phbpContract = "phbp";
-const teamstersContract = "teamsters";
-const dgaContract = "dga";
-const iatseContract = "iatse";
+const agreementOverlay = document.getElementById("aoverlay");
+const projectLoad = document.getElementById("proj_load");
+const unionLoad = document.getElementById("union_load");
+const locationLoad = document.getElementById("location_load");
+const contractLoad = document.getElementById("contract_load");
+let wLocation;
+let wProject;
+let wUnion;
+let contractDataName;
 
 window.addEventListener("DOMContentLoaded", (event) => {
   if (localStorage.getItem("email") !== null) {
@@ -39,6 +43,18 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
 projectSelect.onchange = function () {
   stepTwo.style.display = "block";
+  wProject = this.value;
+  checkForAgreement();
+};
+
+stateSelect.onchange = function () {
+  wLocation = this.value;
+  checkForAgreement();
+};
+
+unionSelect.onchange = function () {
+  wUnion = this.value;
+  checkForAgreement();
 };
 
 fringeEdit.onclick = (e) => {
@@ -55,7 +71,6 @@ next.onclick = (e) => {
 };
 
 projSubmit.onclick = (e) => {
-  //e.preventDefault();
   let submitEmail = localStorage.getItem("email");
   projEmail.value = submitEmail;
   let projectSelectValue = projectSelect.value;
@@ -65,34 +80,18 @@ projSubmit.onclick = (e) => {
   let handlingFeeValue = handlingFee.value;
   let unionValue = unionSelect.value;
   let contractValue = contractSelect.value;
+  let locationId = stateSelect.selectedOptions[0].dataset.location_id;
+  let contractDataValue =
+    contractSelect.selectedOptions[0].dataset.contract_name;
   localStorage.setItem("project-type", projectSelectValue);
   localStorage.setItem("project-location", stateSelectValue);
+  localStorage.setItem("project-location-id", locationId);
   localStorage.setItem("days", daysValue);
   localStorage.setItem("hours", hoursValue);
   localStorage.setItem("handling-fee", handlingFeeValue);
   localStorage.setItem("union", unionValue);
   localStorage.setItem("contract", contractValue);
-  //window.location.assign(`/rate-sheet`);
-};
-
-unionSelect.onchange = function () {
-  let val = this.value;
-  if (val == "SAG") {
-    contractSelect.options.length = 0;
-    updateContractSelect(sagContract);
-  } else if (val == "IATSE") {
-    contractSelect.options.length = 0;
-    updateContractSelect(iatseContract);
-  } else if (val == "Teamsters") {
-    contractSelect.options.length = 0;
-    updateContractSelect(teamstersContract);
-  } else if (val == "DGA") {
-    contractSelect.options.length = 0;
-    updateContractSelect(dgaContract);
-  } else if (val == "PHBP") {
-    contractSelect.options.length = 0;
-    updateContractSelect(phbpContract);
-  }
+  localStorage.setItem("contract-name", contractDataValue);
 };
 
 function addProjectsToSelect() {
@@ -104,15 +103,13 @@ function addProjectsToSelect() {
     }
   }; //handler function that throws any encountered error
 
-  fetch(
-    "https://v1.nocodeapi.com/rileyrichter/airtable/QXbLoLHUXKiRdAdi?tableName=categories"
-  )
+  fetch("https://dev--wrapbook.bparker.autocode.gg/projects/")
     .then(handleError) // skips to .catch if error is thrown
     .then((data) => {
-      data.records.forEach((record) => {
+      data.rows.forEach((row) => {
         let option = document.createElement("option");
-        option.text = record.fields.name;
-        option.value = record.id;
+        option.text = row.fields.name;
+        option.value = row.fields.name;
         projectSelect.add(option);
       });
     })
@@ -120,7 +117,8 @@ function addProjectsToSelect() {
       // catches the error and logs it
     })
     .finally(() => {
-      // we'll do something here
+      projectLoad.classList.add("invisible");
+      projectLoad.remove();
     });
 }
 
@@ -132,15 +130,13 @@ function addUnionsToSelect() {
       return response.json();
     }
   };
-  fetch(
-    "https://v1.nocodeapi.com/rileyrichter/airtable/QXbLoLHUXKiRdAdi?tableName=unions"
-  )
+  fetch("https://dev--wrapbook.bparker.autocode.gg/unions/")
     .then(handleError)
     .then((data) => {
-      data.records.forEach((record) => {
+      data.rows.forEach((row) => {
         let option = document.createElement("option");
-        option.text = record.fields.name;
-        option.value = record.fields.name;
+        option.text = row.fields.name;
+        option.value = row.fields.name;
         unionSelect.add(option);
       });
     })
@@ -148,7 +144,8 @@ function addUnionsToSelect() {
       console.error(err);
     })
     .finally(() => {
-      // we'll do something here
+      unionLoad.classList.add("invisible");
+      unionLoad.remove();
     });
 }
 
@@ -160,15 +157,14 @@ function addLocationsToSelect() {
       return response.json();
     }
   };
-  fetch(
-    "https://v1.nocodeapi.com/rileyrichter/airtable/QXbLoLHUXKiRdAdi?tableName=taxes"
-  )
+  fetch("https://dev--wrapbook.bparker.autocode.gg/locations/")
     .then(handleError)
     .then((data) => {
-      data.records.forEach((record) => {
+      data.rows.forEach((row) => {
         let option = document.createElement("option");
-        option.text = record.fields.state;
-        option.value = record.id;
+        option.text = row.fields.state;
+        option.value = row.fields.state;
+        option.dataset.location_id = row.id;
         stateSelect.add(option);
       });
     })
@@ -176,34 +172,63 @@ function addLocationsToSelect() {
       console.error(err);
     })
     .finally(() => {
-      // we'll do something here
+      locationLoad.classList.add("invisible");
+      locationLoad.remove();
     });
 }
 
-function updateContractSelect(union) {
-  const handleError = (response) => {
-    if (!response.ok) {
-      throw Error(` ${response.status} ${response.statusText}`);
-    } else {
-      return response.json();
-    }
-  };
-  fetch(
-    `https://v1.nocodeapi.com/rileyrichter/airtable/QXbLoLHUXKiRdAdi?tableName=contracts&view=${union}`
-  )
-    .then(handleError)
-    .then((data) => {
-      data.records.forEach((record) => {
-        let option = document.createElement("option");
-        option.text = record.fields.name;
-        option.value = record.id;
-        contractSelect.add(option);
+function checkForAgreement() {
+  if (wLocation == null || wProject == null || wUnion == null) {
+    agreementOverlay.style.display = "flex";
+  } else {
+    contractSelect.options.length = 0;
+    contractLoad.style.display = "flex";
+    contractLoad.classList.remove("invisible");
+    agreementOverlay.style.display = "none";
+    const handleError = (response) => {
+      if (!response.ok) {
+        throw Error(` ${response.status} ${response.statusText}`);
+      } else {
+        return response.json();
+      }
+    };
+    fetch(`https://dev--wrapbook.bparker.autocode.gg/contract`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        Location: `\'${wLocation}\'`,
+        Contract: `\'${wProject}\'`,
+        Union: `\'${wUnion}\'`,
+      }),
+    })
+      .then(handleError)
+      .then((data) => {
+        if (Object.entries(data).length == 0) {
+          contractSelect.options.length = 0;
+          contractSelect.options[0] = new Option("No Contracts");
+          projSubmit.disabled = true;
+          projSubmit.classList.add("disabled");
+        } else {
+          projSubmit.disabled = false;
+          projSubmit.classList.remove("disabled");
+          data.forEach((row) => {
+            let option = document.createElement("option");
+            option.text = row.fields.name;
+            option.value = row.id;
+            option.dataset.contract_name = row.fields.name;
+            contractSelect.add(option);
+          });
+        }
+      })
+      .catch(function writeError(err) {
+        console.log(err);
+      })
+      .finally(() => {
+        contractLoad.classList.add("invisible");
+        contractLoad.style.display = "none";
       });
-    })
-    .catch(function writeError(err) {
-      console.error(err);
-    })
-    .finally(() => {
-      // we'll do something here
-    });
+  }
 }
