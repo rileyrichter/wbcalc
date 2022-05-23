@@ -102,7 +102,7 @@ function addProjectsToSelect() {
     }
   }; //handler function that throws any encountered error
 
-  fetch("https://dev--wrapbook.bparker.autocode.gg/dev/projects/")
+  fetch("https://bparker.api.stdlib.com/wrapbook@dev/dev/projects")
     .then(handleError) // skips to .catch if error is thrown
     .then((data) => {
       data.rows.forEach((row) => {
@@ -129,7 +129,7 @@ function addUnionsToSelect() {
       return response.json();
     }
   };
-  fetch("https://dev--wrapbook.bparker.autocode.gg/dev/unions/")
+  fetch("https://bparker.api.stdlib.com/wrapbook@dev/dev/unions")
     .then(handleError)
     .then((data) => {
       data.rows.forEach((row) => {
@@ -164,7 +164,7 @@ function checkForAgreement() {
         return response.json();
       }
     };
-    fetch(`https://dev--wrapbook.bparker.autocode.gg/dev/contract`, {
+    fetch("https://bparker.api.stdlib.com/wrapbook@dev/dev/contract", {
       method: "POST",
       headers: {
         Accept: "application/json",
