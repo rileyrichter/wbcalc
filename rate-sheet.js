@@ -22,7 +22,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
     }
   };
 
-  fetch(`https://dev--wrapbook.bparker.autocode.gg/dev/positions/`, {
+  fetch(`https://bparker.api.stdlib.com/wrapbook@dev/dev/positions`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -109,7 +109,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 
           // Make the API call with the endpoint and the options
           fetch(
-            "https://dev--wrapbook.bparker.autocode.gg/dev/requests/",
+            "https://bparker.api.stdlib.com/wrapbook@dev/dev/requests",
             requestOptions
           )
             .then(handleError) // If there's an error, skip to the end and display it on canvas
