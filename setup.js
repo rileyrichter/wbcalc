@@ -35,7 +35,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
   addProjectsToSelect();
   addUnionsToSelect();
-  addLocationsToSelect();
   days.value = 1;
   hours.value = 12;
   handlingFee.value = 2;
@@ -149,33 +148,6 @@ function addUnionsToSelect() {
     });
 }
 
-function addLocationsToSelect() {
-  const handleError = (response) => {
-    if (!response.ok) {
-      throw Error(` ${response.status} ${response.statusText}`);
-    } else {
-      return response.json();
-    }
-  };
-  fetch("https://dev--wrapbook.bparker.autocode.gg/dev/locations/")
-    .then(handleError)
-    .then((data) => {
-      data.rows.forEach((row) => {
-        let option = document.createElement("option");
-        option.text = row.fields.state;
-        option.value = row.fields.state;
-        option.dataset.location_id = row.id;
-        stateSelect.add(option);
-      });
-    })
-    .catch(function writeError(err) {
-      console.error(err);
-    })
-    .finally(() => {
-      locationLoad.classList.add("invisible");
-      locationLoad.remove();
-    });
-}
 
 function checkForAgreement() {
   if (wLocation == null || wProject == null || wUnion == null) {
