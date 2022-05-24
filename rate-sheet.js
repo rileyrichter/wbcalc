@@ -103,7 +103,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
               contracts: [contractValue],
               hours: hoursValue,
               scalerate: 100,
-              wrapbookfee: 0.0149,
+              wrapbookfee: 1.49,
             }),
           };
 
