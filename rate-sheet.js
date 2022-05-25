@@ -92,7 +92,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
           let myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
           const wagesNumber = item.querySelector(".twelvel-hours").innerText;
-          wagesValue = Number(wagesNumber.split("$").pop());
+          let wagesValue;
+          if (wagesNumber === "\u2014") {
+            wagesValue = 0;
+          } else {
+            wagesValue = Number(wagesNumber.split("$").pop());
+          }
           let requestOptions = {
             method: "post",
             headers: myHeaders,
@@ -129,7 +134,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
               document.getElementById("medicareRS").textContent = medicareRS;
               let futaFS = Number(data.futaFS) * 100;
               let futaFS2 = futaFS.toFixed(2) + "%";
-              let futaRS = "$" + Number(data.futaRS).toFixed(2);
+              let futaRS = new Intl.NumberFormat("us-EN", {
+                style: "currency",
+                currency: "USD",
+              }).format(data.futaRS);
+              //"$" + Number(data.futaRS).toFixed(2);
               document.getElementById("futaFS").textContent = futaFS2;
               document.getElementById("futaRS").textContent = futaRS;
               let suiFS = Number(data.suiFS) * 100;
@@ -199,3 +208,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
 closeModal.onclick = (e) => {
   calcModal.style.display = "none";
 };
+
+window.addEventListener("load", (event) => {
+  let newnumber = 20000 * 0.062;
+  console.log(
+    new Intl.NumberFormat("us-EN", {
+      style: "currency",
+      currency: "USD",
+    }).format(newnumber)
+  );
+  console.log(new Intl.NumberFormat("us-EN").format(newnumber));
+});
