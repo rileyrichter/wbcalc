@@ -9,8 +9,48 @@ const taxesData = localStorage.getItem("project-location-id");
 const contractValue = localStorage.getItem("contract");
 const contractName = localStorage.getItem("contract-name");
 const hoursValue = Number(localStorage.getItem("hours"));
+let contractHoursBased;
+let contractGrossWages;
+let contractScaleRate;
 
-window.addEventListener("DOMContentLoaded", (event) => {
+function getContractInfo() {
+  const handleError = (response) => {
+    if (!response.ok) {
+      throw Error(` ${response.status} ${response.statusText}`);
+    } else {
+      return response.json();
+    }
+  };
+
+  fetch("https://dev--wrapbook.bparker.autocode.gg/dev/get-contract/", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      Contract: `${contractValue}`,
+    }),
+  })
+    .then(handleError) // skips to .catch if error is thrown
+    .then((data) => {
+      console.log(data);
+      contractHoursBased = data.fields.hours_based;
+      contractGrossWages = data.fields.gross_wages;
+      contractScaleRate = data.fields.scale_rate;
+      console.log(data.fields.hours_based);
+      console.log(data.fields.gross_wages);
+      console.log(data.fields.scale_rate);
+    })
+    .catch(function writeError(err) {
+      console.log(err);
+    })
+    .finally(() => {
+      runSetup();
+    });
+}
+
+function runSetup() {
   if (contractName == null) {
     window.location.assign(`/begin`);
   }
@@ -57,6 +97,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
         } else {
           twelveHours.innerText = `$ ${record.fields.twelve_hours.toFixed(2)}`;
         }
+        let wagesValue;
+        if (wagesNumber === "\u2014") {
+          wagesValue = 0;
+        } else {
+          wagesValue = Number(wagesNumber.split("$").pop());
+        }
+        let newThing = wagesValue * contractScaleRate;
+        console.log(newThing);
         let fringeRate = newRow.getElementsByClassName("fringe-rate")[0];
         fringeRate.innerText = `44.50%`;
         let total = newRow.getElementsByClassName("total")[0];
@@ -203,13 +251,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
         });
       });
     });
-});
+}
 
 closeModal.onclick = (e) => {
   calcModal.style.display = "none";
 };
 
 window.addEventListener("load", (event) => {
+  getContractInfo();
   let newnumber = 20000 * 0.062;
   console.log(
     new Intl.NumberFormat("us-EN", {
