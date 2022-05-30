@@ -9,6 +9,7 @@ const taxesData = localStorage.getItem("project-location-id");
 const contractValue = localStorage.getItem("contract");
 const contractName = localStorage.getItem("contract-name");
 const hoursValue = Number(localStorage.getItem("hours"));
+let wrapbookFee = 0.0149;
 let contractHoursBased;
 let contractGrossWages;
 let contractScaleRate;
@@ -219,6 +220,11 @@ function runSetup() {
         let hoursCalc = hoursValue * contractHoursBased;
 
         // --------------------------------------------------
+        // Total math => (wages * wrapbook fee)
+        // --------------------------------------------------
+        let wrapCalc = wageRecordValue * wrapbookFee;
+
+        // --------------------------------------------------
         // Fringe total math => (add up all our calculations)
         // --------------------------------------------------
         let fringeTotal =
@@ -230,7 +236,8 @@ function runSetup() {
           wcCalc +
           grossCalc +
           scaleCalc +
-          hoursCalc;
+          hoursCalc +
+          wrapCalc;
 
         // --------------------------------------------------
         // Fringe rate math => (fringe total / wages)
