@@ -12,6 +12,51 @@ const hoursValue = Number(localStorage.getItem("hours"));
 let contractHoursBased;
 let contractGrossWages;
 let contractScaleRate;
+let locationFuta;
+let locationLocalTaxes;
+let locationMedicare;
+let locationSocialSecurity;
+let locationSui;
+let locationTotal;
+let locationWc;
+
+function getTaxInfo() {
+  const handleError = (response) => {
+    if (!response.ok) {
+      throw Error(` ${response.status} ${response.statusText}`);
+    } else {
+      return response.json();
+    }
+  };
+
+  fetch("https://dev--wrapbook.bparker.autocode.gg/dev/get-tax/", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      Tax: `${taxesData}`,
+    }),
+  })
+    .then(handleError) // skips to .catch if error is thrown
+    .then((data) => {
+      locationFuta = data.fields.futa;
+      locationLocalTaxes = data.fields.local_taxes;
+      locationMedicare = data.fields.medicare;
+      locationSocialSecurity = data.fields.social_security;
+      console.log(locationSocialSecurity);
+      locationSui = data.fields.sui;
+      locationTotal = data.fields.total;
+      locationWc = data.fields.wc;
+    })
+    .catch(function writeError(err) {
+      console.log(err);
+    })
+    .finally(() => {
+      getContractInfo();
+    });
+}
 
 function getContractInfo() {
   const handleError = (response) => {
@@ -34,13 +79,9 @@ function getContractInfo() {
   })
     .then(handleError) // skips to .catch if error is thrown
     .then((data) => {
-      console.log(data);
       contractHoursBased = data.fields.hours_based;
       contractGrossWages = data.fields.gross_wages;
       contractScaleRate = data.fields.scale_rate;
-      console.log(data.fields.hours_based);
-      console.log(data.fields.gross_wages);
-      console.log(data.fields.scale_rate);
     })
     .catch(function writeError(err) {
       console.log(err);
@@ -75,40 +116,149 @@ function runSetup() {
     .then(handleError)
     .then((data) => {
       data.forEach((record) => {
+        // clone the row and assign the id dynamically
         let newRow = dataRow.cloneNode(true);
         newRow.id = record.id;
-        let jobTitle = newRow.getElementsByClassName("position")[0];
+        // set the row dom elements to variables we can write values to
+        let jobTitle = newRow.querySelector(".position");
+        let unionLocal = newRow.querySelector(".union-local");
+        let hourlyRate = newRow.querySelector(".hourly-rate");
+        let twelveHours = newRow.querySelector(".twelvel-hours");
+        let fringeRate = newRow.querySelector(".fringe-rate");
+        let total = newRow.querySelector(".total");
+
+        // write the job title to the row
         jobTitle.innerText = record.fields.job_title;
-        let unionLocal = newRow.getElementsByClassName("union-local")[0];
+
+        // --------------------------------------------------
+        // lets do some logic to make sure we have numbers to work with
+        // we're also using logic to format text to look nice if a value doesn't exist
+        // --------------------------------------------------
+
+        // --------------------------------------------------
+        // Does the record have a local union value?
+        // --------------------------------------------------
         if (record.fields.union_local == null) {
           unionLocal.innerText = `\u2014`;
         } else {
           unionLocal.innerText = record.fields.union_local;
         }
-        let hourlyRate = newRow.getElementsByClassName("hourly-rate")[0];
+
+        // --------------------------------------------------
+        // Does the record have a hourly rate value?
+        // --------------------------------------------------
         if (record.fields.hourly_rate != null) {
           hourlyRate.innerText = record.fields.hourly_rate;
         } else {
           hourlyRate.innerText = `\u2014`;
         }
-        let twelveHours = newRow.getElementsByClassName("twelvel-hours")[0];
-        if (record.fields.twelve_hours == null) {
+        // --------------------------------------------------
+        // Does the record have a wage for 12hours?
+        // --------------------------------------------------
+        let wageRecordValue;
+        let wageRecord = record.fields.twelve_hours;
+
+        if (wageRecord == null) {
           twelveHours.innerText = `\u2014`;
+          wageRecordValue = 0;
         } else {
-          twelveHours.innerText = `$ ${record.fields.twelve_hours.toFixed(2)}`;
+          wageRecordValue = wageRecord;
+          twelveHours.innerText = Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(record.fields.twelve_hours);
         }
-        let wagesValue;
-        if (wagesNumber === "\u2014") {
-          wagesValue = 0;
+
+        // --------------------------------------------------
+        // Lets do some maths
+        // ∠░ʘ̆◡ʘ̆░／
+        // --------------------------------------------------
+
+        // --------------------------------------------------
+        // Social security math => (wages * social security)
+        // --------------------------------------------------
+        let socialCalc = wageRecordValue * locationSocialSecurity;
+
+        // --------------------------------------------------
+        // Medicare math => (wages * medicare)
+        // --------------------------------------------------
+        let mediCalc = wageRecordValue * locationMedicare;
+
+        // --------------------------------------------------
+        // FUTA math => (wages * FUTA)
+        // --------------------------------------------------
+        let futaCalc = wageRecordValue * locationFuta;
+
+        // --------------------------------------------------
+        // SUi math => (wages * SUI)
+        // --------------------------------------------------
+        let suiCalc = wageRecordValue * locationSui;
+
+        // --------------------------------------------------
+        // Local taxes math => (wages * local taxes)
+        // --------------------------------------------------
+        let localCalc = wageRecordValue * locationLocalTaxes;
+
+        // --------------------------------------------------
+        // WC math => (wages * WC)
+        // --------------------------------------------------
+        let wcCalc = wageRecordValue * locationWc;
+
+        // --------------------------------------------------
+        // Gross wages math => (wages * gross wages)
+        // --------------------------------------------------
+        let grossCalc = wageRecordValue * contractGrossWages;
+
+        // --------------------------------------------------
+        // Scale rate math => (scale rate * scale * hours)
+        // --------------------------------------------------
+        let scaleCalc = 100 * contractScaleRate * hoursValue;
+
+        // --------------------------------------------------
+        // Hours based math => (hours * contract hours)
+        // --------------------------------------------------
+        let hoursCalc = hoursValue * contractHoursBased;
+
+        // --------------------------------------------------
+        // Fringe total math => (add up all our calculations)
+        // --------------------------------------------------
+        let fringeTotal =
+          socialCalc +
+          mediCalc +
+          futaCalc +
+          suiCalc +
+          localCalc +
+          wcCalc +
+          grossCalc +
+          scaleCalc +
+          hoursCalc;
+
+        // --------------------------------------------------
+        // Fringe rate math => (fringe total / wages)
+        // --------------------------------------------------
+        let fringeCalc = fringeTotal / wageRecordValue;
+
+        // --------------------------------------------------
+        // Let's write all our totals to the DOM
+        // --------------------------------------------------
+
+        // Fringe percentage
+        if (fringeCalc == Infinity) {
+          fringeRate.innerText = `\u2014`;
         } else {
-          wagesValue = Number(wagesNumber.split("$").pop());
+          fringeRate.innerText = Number(fringeCalc).toLocaleString(undefined, {
+            style: "percent",
+            minimumFractionDigits: 2,
+          });
         }
-        let newThing = wagesValue * contractScaleRate;
-        console.log(newThing);
-        let fringeRate = newRow.getElementsByClassName("fringe-rate")[0];
-        fringeRate.innerText = `44.50%`;
-        let total = newRow.getElementsByClassName("total")[0];
-        total.innerText = `$123.45`;
+
+        // Fringe total
+        total.innerText = Intl.NumberFormat("us-EN", {
+          style: "currency",
+          currency: "USD",
+        }).format(fringeTotal);
+
+        // add the row to the table
         root.appendChild(newRow);
       });
     })
@@ -258,13 +408,5 @@ closeModal.onclick = (e) => {
 };
 
 window.addEventListener("load", (event) => {
-  getContractInfo();
-  let newnumber = 20000 * 0.062;
-  console.log(
-    new Intl.NumberFormat("us-EN", {
-      style: "currency",
-      currency: "USD",
-    }).format(newnumber)
-  );
-  console.log(new Intl.NumberFormat("us-EN").format(newnumber));
+  getTaxInfo();
 });
