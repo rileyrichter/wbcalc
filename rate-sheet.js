@@ -45,7 +45,6 @@ function getTaxInfo() {
       locationLocalTaxes = data.fields.local_taxes;
       locationMedicare = data.fields.medicare;
       locationSocialSecurity = data.fields.social_security;
-      console.log(locationSocialSecurity);
       locationSui = data.fields.sui;
       locationTotal = data.fields.total;
       locationWc = data.fields.wc;
