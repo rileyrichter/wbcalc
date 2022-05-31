@@ -9,6 +9,7 @@ const taxesData = localStorage.getItem("project-location-id");
 const contractValue = localStorage.getItem("contract");
 const contractName = localStorage.getItem("contract-name");
 const hoursValue = Number(localStorage.getItem("hours"));
+const downloadButton = document.getElementById("download");
 let wrapbookFee = 0.0149;
 let contractHoursBased;
 let contractGrossWages;
@@ -20,6 +21,7 @@ let locationSocialSecurity;
 let locationSui;
 let locationTotal;
 let locationWc;
+let allObjects = [];
 
 function getTaxInfo() {
   const handleError = (response) => {
@@ -40,7 +42,7 @@ function getTaxInfo() {
       Tax: `${taxesData}`,
     }),
   })
-    .then(handleError) // skips to .catch if error is thrown
+    .then(handleError)
     .then((data) => {
       locationFuta = data.fields.futa;
       locationLocalTaxes = data.fields.local_taxes;
@@ -77,7 +79,7 @@ function getContractInfo() {
       Contract: `${contractValue}`,
     }),
   })
-    .then(handleError) // skips to .catch if error is thrown
+    .then(handleError)
     .then((data) => {
       contractHoursBased = data.fields.hours_based;
       contractGrossWages = data.fields.gross_wages;
@@ -116,48 +118,27 @@ function runSetup() {
     .then(handleError)
     .then((data) => {
       data.forEach((record) => {
-        // clone the row and assign the id dynamically
         let newRow = dataRow.cloneNode(true);
         newRow.id = record.id;
-        // set the row dom elements to variables we can write values to
         let jobTitle = newRow.querySelector(".position");
         let unionLocal = newRow.querySelector(".union-local");
         let hourlyRate = newRow.querySelector(".hourly-rate");
         let twelveHours = newRow.querySelector(".twelvel-hours");
         let fringeRate = newRow.querySelector(".fringe-rate");
         let total = newRow.querySelector(".total");
-
-        // write the job title to the row
         jobTitle.innerText = record.fields.job_title;
-
-        // --------------------------------------------------
-        // lets do some logic to make sure we have numbers to work with
-        // we're also using logic to format text to look nice if a value doesn't exist
-        // --------------------------------------------------
-
-        // --------------------------------------------------
-        // Does the record have a local union value?
-        // --------------------------------------------------
         if (record.fields.union_local == null) {
           unionLocal.innerText = `\u2014`;
         } else {
           unionLocal.innerText = record.fields.union_local;
         }
-
-        // --------------------------------------------------
-        // Does the record have a hourly rate value?
-        // --------------------------------------------------
         if (record.fields.hourly_rate != null) {
           hourlyRate.innerText = record.fields.hourly_rate;
         } else {
           hourlyRate.innerText = `\u2014`;
         }
-        // --------------------------------------------------
-        // Does the record have a wage for 12hours?
-        // --------------------------------------------------
         let wageRecordValue;
         let wageRecord = record.fields.twelve_hours;
-
         if (wageRecord == null) {
           twelveHours.innerText = `\u2014`;
           wageRecordValue = 0;
@@ -168,65 +149,16 @@ function runSetup() {
             currency: "USD",
           }).format(record.fields.twelve_hours);
         }
-
-        // --------------------------------------------------
-        // Lets do some maths
-        // ∠░ʘ̆◡ʘ̆░／
-        // --------------------------------------------------
-
-        // --------------------------------------------------
-        // Social security math => (wages * social security)
-        // --------------------------------------------------
         let socialCalc = wageRecordValue * locationSocialSecurity;
-
-        // --------------------------------------------------
-        // Medicare math => (wages * medicare)
-        // --------------------------------------------------
         let mediCalc = wageRecordValue * locationMedicare;
-
-        // --------------------------------------------------
-        // FUTA math => (wages * FUTA)
-        // --------------------------------------------------
         let futaCalc = wageRecordValue * locationFuta;
-
-        // --------------------------------------------------
-        // SUi math => (wages * SUI)
-        // --------------------------------------------------
         let suiCalc = wageRecordValue * locationSui;
-
-        // --------------------------------------------------
-        // Local taxes math => (wages * local taxes)
-        // --------------------------------------------------
         let localCalc = wageRecordValue * locationLocalTaxes;
-
-        // --------------------------------------------------
-        // WC math => (wages * WC)
-        // --------------------------------------------------
         let wcCalc = wageRecordValue * locationWc;
-
-        // --------------------------------------------------
-        // Gross wages math => (wages * gross wages)
-        // --------------------------------------------------
         let grossCalc = wageRecordValue * contractGrossWages;
-
-        // --------------------------------------------------
-        // Scale rate math => (scale rate * scale * hours)
-        // --------------------------------------------------
         let scaleCalc = 100 * contractScaleRate * hoursValue;
-
-        // --------------------------------------------------
-        // Hours based math => (hours * contract hours)
-        // --------------------------------------------------
         let hoursCalc = hoursValue * contractHoursBased;
-
-        // --------------------------------------------------
-        // Total math => (wages * wrapbook fee)
-        // --------------------------------------------------
         let wrapCalc = wageRecordValue * wrapbookFee;
-
-        // --------------------------------------------------
-        // Fringe total math => (add up all our calculations)
-        // --------------------------------------------------
         let fringeTotal =
           socialCalc +
           mediCalc +
@@ -238,17 +170,9 @@ function runSetup() {
           scaleCalc +
           hoursCalc +
           wrapCalc;
-
-        // --------------------------------------------------
-        // Fringe rate math => (fringe total / wages)
-        // --------------------------------------------------
+        let unionTotal = grossCalc + scaleCalc + hoursCalc;
+        let unionBasis = unionTotal / wageRecordValue;
         let fringeCalc = fringeTotal / wageRecordValue;
-
-        // --------------------------------------------------
-        // Let's write all our totals to the DOM
-        // --------------------------------------------------
-
-        // Fringe percentage
         if (fringeCalc == Infinity) {
           fringeRate.innerText = `\u2014`;
         } else {
@@ -257,19 +181,123 @@ function runSetup() {
             minimumFractionDigits: 2,
           });
         }
-
-        // Fringe total
         total.innerText = Intl.NumberFormat("us-EN", {
           style: "currency",
           currency: "USD",
         }).format(fringeTotal);
+        let newObject = {
+          name: record.fields.job_title,
+          social_basis: Number(locationSocialSecurity).toLocaleString(
+            undefined,
+            {
+              style: "percent",
+              minimumFractionDigits: 2,
+            }
+          ),
+          social_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(socialCalc),
+          medicare_basis: Number(locationMedicare).toLocaleString(undefined, {
+            style: "percent",
+            minimumFractionDigits: 2,
+          }),
+          medicare_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(mediCalc),
+          futa_basis: Number(locationFuta).toLocaleString(undefined, {
+            style: "percent",
+            minimumFractionDigits: 2,
+          }),
+          futa_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(futaCalc),
+          sui_basis: Number(locationSui).toLocaleString(undefined, {
+            style: "percent",
+            minimumFractionDigits: 2,
+          }),
+          sui_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(suiCalc),
+          local_taxes_basis: Number(locationLocalTaxes).toLocaleString(
+            undefined,
+            {
+              style: "percent",
+              minimumFractionDigits: 2,
+            }
+          ),
+          local_taxes_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(localCalc),
+          wc_basis: Number(locationWc).toLocaleString(undefined, {
+            style: "percent",
+            minimumFractionDigits: 2,
+          }),
+          wc_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(wcCalc),
+          gross_wages_basis: contractGrossWages,
+          gross_wages_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(grossCalc),
+          scale_rate_basis: Number(contractScaleRate).toLocaleString(
+            undefined,
+            {
+              style: "percent",
+              minimumFractionDigits: 2,
+            }
+          ),
+          scale_rate_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(scaleCalc),
+          hours_based_basis: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(contractHoursBased),
+          hours_based_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(hoursCalc),
+          wrapbook_fee_basis: Number(wrapbookFee).toLocaleString(undefined, {
+            style: "percent",
+            minimumFractionDigits: 2,
+          }),
+          wrapbook_fee_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(wrapCalc),
+          fringe_rate_basis: Number(fringeCalc).toLocaleString(undefined, {
+            style: "percent",
+            minimumFractionDigits: 2,
+          }),
+          fringe_rate_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(fringeTotal),
+          union_total_basis: Number(unionBasis).toLocaleString(undefined, {
+            style: "percent",
+            minimumFractionDigits: 2,
+          }),
+          untion_total_result: Intl.NumberFormat("us-EN", {
+            style: "currency",
+            currency: "USD",
+          }).format(unionTotal),
+        };
 
-        // add the row to the table
+        allObjects.push(newObject);
+
         root.appendChild(newRow);
       });
     })
     .catch(function writeError(err) {
-      // catches the error and logs it
+      console.log(err);
     })
     .finally(() => {
       dataRow.remove();
@@ -280,10 +308,6 @@ function runSetup() {
           calcModal.style.display = "flex";
           document.getElementById("calc-loading").style.display = "flex";
           document.getElementById("results").style.display = "none";
-
-          // Get the values in the form and set them as variables, converting some to numbers for the API calls
-
-          // Set up the handle error
           const handleError = (response) => {
             if (!response.ok) {
               throw Error(` ${response.status} ${response.statusText}`);
@@ -291,8 +315,6 @@ function runSetup() {
               return response.json();
             }
           };
-
-          // Set the headers for the API call
           let myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
           const wagesNumber = item.querySelector(".twelvel-hours").innerText;
@@ -315,13 +337,11 @@ function runSetup() {
               wrapbookfee: 1.49,
             }),
           };
-
-          // Make the API call with the endpoint and the options
           fetch(
             "https://bparker.api.stdlib.com/wrapbook@dev/dev/requests",
             requestOptions
           )
-            .then(handleError) // If there's an error, skip to the end and display it on canvas
+            .then(handleError)
             .then((data) => {
               let socialsecurityFS = Number(data.socialsecurityFS) * 100;
               let socialsecurityFS2 = socialsecurityFS.toFixed(2) + "%";
@@ -395,10 +415,6 @@ function runSetup() {
             })
             .catch(function writeError(err) {
               console.log(err);
-              /* document.getElementById("result").style.display = "none";
-              document.getElementById("loading").style.display = "none";
-              document.getElementById("error").style.display = "block";
-              document.getElementById("status").textContent = err; */
             })
             .finally(() => {
               document.getElementById("results").style.display = "block";
@@ -415,4 +431,81 @@ closeModal.onclick = (e) => {
 
 window.addEventListener("load", (event) => {
   getTaxInfo();
+  downloadButton.addEventListener("click", download);
 });
+
+function convertToCSV(objArray) {
+  let array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
+  let str = "";
+
+  for (let i = 0; i < array.length; i++) {
+    let line = "";
+    for (let index in array[i]) {
+      if (line != "") line += ",";
+
+      line += array[i][index];
+    }
+
+    str += line + "\r\n";
+  }
+
+  return str;
+}
+
+function exportCSVFile(headers, items, fileTitle) {
+  if (headers) {
+    items.unshift(headers);
+  }
+  let jsonObject = JSON.stringify(items);
+  let csv = this.convertToCSV(jsonObject);
+  let exportedFilenmae = fileTitle + ".csv" || "export.csv";
+  let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  if (navigator.msSaveBlob) {
+    navigator.msSaveBlob(blob, exportedFilenmae);
+  } else {
+    let link = document.createElement("a");
+    if (link.download !== undefined) {
+      let url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", exportedFilenmae);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  }
+}
+
+function download() {
+  var headers = {
+    name: "Name",
+    social_basis: "Social Security Basis",
+    social_result: "Social Security Result",
+    medicare_basis: "Medicare Basis",
+    medicare_result: "Medicare Result",
+    futa_basis: "FUTA Basis",
+    futa_result: "FUTA Result",
+    sui_basis: "Supplemental Unemployment Insurance Basis",
+    sui_result: "Supplemental Unemployment Insurance Result",
+    local_taxes_basis: "Local Taxes Basis",
+    local_taxes_result: "Local Taxes Result",
+    wc_basis: "Workers Compensation Basis",
+    wc_result: "Workers Compensation Result",
+    gross_wages_basis: "Gross Wages Basis",
+    gross_wages_result: "Gross Wages Result",
+    scale_rate_basis: "Scale Rate Basis",
+    scale_rate_result: "Scale Rate Result",
+    hours_based_basis: "Hours Based Basis",
+    hours_based_result: "Hours Based Result",
+    wrapbook_fee_basis: "Wrapbook Fee Basis",
+    wrapbook_fee_result: "Wrapbook Fee Result",
+    fringe_rate_basis: "Fringe Rate Basis",
+    fringe_rate_result: "Fringe Rate Result",
+    union_total_basis: "Union Total Basis",
+    untion_total_result: "Union Total Result",
+  };
+
+  let newDate = new Date().toLocaleTimeString();
+  let fileTitle = `Wrapbook Rate Sheet ${newDate}`;
+  exportCSVFile(headers, allObjects, fileTitle);
+}
