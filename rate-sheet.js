@@ -1,28 +1,28 @@
-const baseURL = "https://bparker.api.stdlib.com/wrapbook@dev/dev";
-const root = document.getElementById("root");
-const dataRow = document.getElementById("data_row");
-const union = localStorage.getItem("union");
-const calcModal = document.getElementById("modal");
-const closeModal = document.getElementById("close");
-const loadingDiv = document.getElementById("loading");
-const taxesValue = localStorage.getItem("project-location");
-const taxesData = localStorage.getItem("project-location-id");
-const contractValue = localStorage.getItem("contract");
-const contractName = localStorage.getItem("contract-name");
-const hoursValue = Number(localStorage.getItem("hours"));
-const downloadButton = document.getElementById("download");
-let wrapbookFee = 0.0149;
-let contractHoursBased;
-let contractGrossWages;
-let contractScaleRate;
-let locationFuta;
-let locationLocalTaxes;
-let locationMedicare;
-let locationSocialSecurity;
-let locationSui;
-let locationTotal;
-let locationWc;
-let allObjects = [];
+const baseURL = "https://bparker.api.stdlib.com/wrapbook@dev/dev",
+  root = document.getElementById("root"),
+  dataRow = document.getElementById("data_row"),
+  union = localStorage.getItem("union"),
+  calcModal = document.getElementById("modal"),
+  closeModal = document.getElementById("close"),
+  loadingDiv = document.getElementById("loading"),
+  taxesValue = localStorage.getItem("project-location"),
+  taxesData = localStorage.getItem("project-location-id"),
+  contractValue = localStorage.getItem("contract"),
+  contractName = localStorage.getItem("contract-name"),
+  hoursValue = Number(localStorage.getItem("hours")),
+  downloadButton = document.getElementById("download");
+let wrapbookFee = 0.0149,
+  contractHoursBased,
+  contractGrossWages,
+  contractScaleRate,
+  locationFuta,
+  locationLocalTaxes,
+  locationMedicare,
+  locationSocialSecurity,
+  locationSui,
+  locationTotal,
+  locationWc,
+  allObjects = [];
 
 function getTaxInfo() {
   const handleError = (response) => {
