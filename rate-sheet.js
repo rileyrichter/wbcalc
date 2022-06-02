@@ -1,3 +1,4 @@
+const baseURL = "https://bparker.api.stdlib.com/wrapbook@dev/dev";
 const root = document.getElementById("root");
 const dataRow = document.getElementById("data_row");
 const union = localStorage.getItem("union");
@@ -32,7 +33,7 @@ function getTaxInfo() {
     }
   };
 
-  fetch("https://dev--wrapbook.bparker.autocode.gg/dev/get-tax/", {
+  fetch(`${baseURL}/get-tax/`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -69,7 +70,7 @@ function getContractInfo() {
     }
   };
 
-  fetch("https://dev--wrapbook.bparker.autocode.gg/dev/get-contract/", {
+  fetch(`${baseURL}/get-contract/`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -105,7 +106,7 @@ function runSetup() {
     }
   };
 
-  fetch(`https://bparker.api.stdlib.com/wrapbook@dev/dev/positions`, {
+  fetch(`${baseURL}/positions`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -337,10 +338,7 @@ function runSetup() {
               wrapbookfee: 1.49,
             }),
           };
-          fetch(
-            "https://bparker.api.stdlib.com/wrapbook@dev/dev/requests",
-            requestOptions
-          )
+          fetch(`${baseURL}/requests`, requestOptions)
             .then(handleError)
             .then((data) => {
               let socialsecurityFS = Number(data.socialsecurityFS) * 100;

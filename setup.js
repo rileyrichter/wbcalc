@@ -1,29 +1,27 @@
-const next = document.getElementById("begin-submit");
-const emailGate = document.getElementById("gate");
-const projDetails = document.getElementById("details");
-const projectSelect = document.getElementById("project");
-const stepTwo = document.getElementById("step-two");
-const contractSelect = document.getElementById("contract");
-const unionSelect = document.getElementById("union");
-const email = document.getElementById("email");
-const days = document.getElementById("days");
-const hours = document.getElementById("hours");
-const handlingFee = document.getElementById("handling-fee");
-const stateSelect = document.getElementById("production-state");
-const projSubmit = document.getElementById("form-submit");
-const projEmail = document.getElementById("emailproj");
-const fringeEdit = document.getElementById("fringe-edit");
-const fringeForm = document.getElementById("fringe");
-const fringeDescription = document.getElementById("fringe-description");
-const agreementOverlay = document.getElementById("aoverlay");
-const projectLoad = document.getElementById("proj_load");
-const unionLoad = document.getElementById("union_load");
-const locationLoad = document.getElementById("location_load");
-const contractLoad = document.getElementById("contract_load");
-let wLocation;
-let wProject;
-let wUnion;
-let contractDataName;
+const baseURL = "https://bparker.api.stdlib.com/wrapbook@dev/dev",
+  next = document.getElementById("begin-submit"),
+  emailGate = document.getElementById("gate"),
+  projDetails = document.getElementById("details"),
+  projectSelect = document.getElementById("project"),
+  stepTwo = document.getElementById("step-two"),
+  contractSelect = document.getElementById("contract"),
+  unionSelect = document.getElementById("union"),
+  email = document.getElementById("email"),
+  days = document.getElementById("days"),
+  hours = document.getElementById("hours"),
+  handlingFee = document.getElementById("handling-fee"),
+  stateSelect = document.getElementById("production-state"),
+  projSubmit = document.getElementById("form-submit"),
+  projEmail = document.getElementById("emailproj"),
+  fringeEdit = document.getElementById("fringe-edit"),
+  fringeForm = document.getElementById("fringe"),
+  fringeDescription = document.getElementById("fringe-description"),
+  agreementOverlay = document.getElementById("aoverlay"),
+  projectLoad = document.getElementById("proj_load"),
+  unionLoad = document.getElementById("union_load"),
+  locationLoad = document.getElementById("location_load"),
+  contractLoad = document.getElementById("contract_load");
+let wLocation, wProject, wUnion, contractDataName;
 
 window.addEventListener("DOMContentLoaded", (event) => {
   if (localStorage.getItem("email") !== null) {
@@ -100,10 +98,10 @@ function addProjectsToSelect() {
     } else {
       return response.json();
     }
-  }; //handler function that throws any encountered error
+  };
 
-  fetch("https://bparker.api.stdlib.com/wrapbook@dev/dev/projects")
-    .then(handleError) // skips to .catch if error is thrown
+  fetch(`${baseURL}/projects`)
+    .then(handleError)
     .then((data) => {
       data.rows.forEach((row) => {
         let option = document.createElement("option");
@@ -113,7 +111,7 @@ function addProjectsToSelect() {
       });
     })
     .catch(function writeError(err) {
-      // catches the error and logs it
+      console.log(err);
     })
     .finally(() => {
       projectLoad.classList.add("invisible");
@@ -129,7 +127,7 @@ function addUnionsToSelect() {
       return response.json();
     }
   };
-  fetch("https://bparker.api.stdlib.com/wrapbook@dev/dev/unions")
+  fetch(`${baseURL}/unions`)
     .then(handleError)
     .then((data) => {
       data.rows.forEach((row) => {
@@ -148,7 +146,6 @@ function addUnionsToSelect() {
     });
 }
 
-
 function checkForAgreement() {
   if (wLocation == null || wProject == null || wUnion == null) {
     agreementOverlay.style.display = "flex";
@@ -164,7 +161,7 @@ function checkForAgreement() {
         return response.json();
       }
     };
-    fetch("https://bparker.api.stdlib.com/wrapbook@dev/dev/contract", {
+    fetch(`${baseURL}}/contract`, {
       method: "POST",
       headers: {
         Accept: "application/json",
